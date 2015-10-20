@@ -1,6 +1,5 @@
 __author__ = 'liyuanpeng'
 
-# -*- coding:utf-8 -*-
 import urllib
 import json
 import re
