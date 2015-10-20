@@ -4,7 +4,7 @@ import urllib
 import json
 import re
 
-#get the price for JD_website items prices
+#get the price for JD_website items
 
 class JdPrice(object):
 
