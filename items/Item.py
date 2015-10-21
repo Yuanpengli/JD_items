@@ -41,7 +41,6 @@ class JdPrice(object):
 
         skuid = self.get_product_skuid()
         name = self.get_product_name()
-        print name
 
 
         url = 'http://p.3.cn/prices/mgets?skuIds=J_' + skuid + '&type=1'
@@ -54,8 +53,43 @@ class JdPrice(object):
         return price
 
 
+class geturl(object):
+
+    def __init__(self,url):
+        self.url = url
+        self._response = urllib.urlopen(self.url)
+        self.html = self._response.read()
+
+    def get(self):
+        product_re = re.compile(r'href="(.*?)"', re.S)
+        product_info = re.findall(product_re, self.html)
+
+        info = []
+        for url in product_info:
+            if url.startswith('//item') & url.endswith('html'):
+                info.append(url)
+        return info
+
+
+
 if __name__ == '__main__':
 
-    url = 'http://item.jd.com/11461683.html'
-    jp = JdPrice(url)
-    print jp.get_product_price()
+    # url = 'http://item.jd.com/11461683.html'
+    # jp = JdPrice(url)
+    # print jp.get_product_price()
+
+
+    dict = {}
+    page = 1
+
+    while True:
+        ob = geturl('http://search.jd.com/search?keyword=c&enc=utf-8&qrst=1&rt=1&stop=1&book=y&vt=2&page='+str(page))
+        if ob==None:
+            break
+        print '***********print    '+str(page)+'    page************'
+        page=page+1
+        for url in ob.get():
+            if not dict.has_key(url):
+                dict[url]=1
+                jp = JdPrice('http:'+url)
+                print jp.get_product_name()+'\t'+jp.get_product_price()
