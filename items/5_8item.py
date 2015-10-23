@@ -13,23 +13,45 @@ from PIL import Image
 
 im = Image.open('/Users/liyuanpeng/Downloads/showphone.gif')
 im = im.convert("L")
-a=(numpy.asarray(im))
+a=numpy.asarray(im)
 l=len(a)
-print l
+p=len(a[15])
+print p
+
+
+
 f=open("geodesic.txt",'w')
+
+
+sum=0.0
 for i in range(l):
-    t=a[i]
-    f.write(str(t)+ "\n")
+    for j in range(p):
+
+        t=a[i][j]
+        sum = sum + t
+        if j == p-1:
+            f.write(str(t)+'\n')
+        else:
+            f.write(str(t)+' ')
 f.close()
 
-#print a.shape()
-#print numpy.asarray(im)[9]
-#im.show()
+average = sum /float(l*p)
 
-# class JdPrice(object):
-#
-#     def __init__(self, url):
-#         self.url = url
-#         self._response = urllib.urlopen(self.url)
-#         self.html = self._response.read()
+mat= open ("matrix.txt",'w')
+
+for i in range(l):
+    for j in range(p):
+        if j ==p-1:
+            if a[i][j]>average:
+                mat.write(str(1)+'\n')
+            else:
+                mat.write(str(0)+'\n')
+        else:
+            if a[i][j]>average:
+                mat.write(str(1)+' ')
+            else:
+                mat.write(str(0)+' ')
+mat.close()
+
+
 

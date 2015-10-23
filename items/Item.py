@@ -16,6 +16,7 @@ class JdPrice(object):
     def get_product(self):
 
         product_re = re.compile(r'compatible: true,(.*?)};', re.S)
+        #print product_re
         product_info = re.findall(product_re, self.html)[0]
         return product_info
 
@@ -52,6 +53,26 @@ class JdPrice(object):
             price = price_json['p']
         return price
 
+    def get_product_comments(self):
+
+        number_of_comments = None
+
+        skuid = self.get_product_skuid()
+
+        url = 'http://club.jd.com/clubservice.aspx?method=GetCommentsCount&referenceIds=' + skuid
+
+        self._response = urllib.urlopen(url)
+
+        self.html = self._response.read()
+
+        CommentCount_re = re.compile(r'"CommentCount":(.*?),')
+
+        CommentCount = re.findall(CommentCount_re, self.html)[0]
+
+        return CommentCount
+
+   # def maijiayingxiang(self):
+
 
 class geturl(object):
 
@@ -70,6 +91,12 @@ class geturl(object):
                 info.append(url)
         return info
 
+# class get_number_of_comments(object):
+#
+#     def __init__(self,url):
+#         self.url = url
+#         self._response = urllib.urlopen(self.url)
+#         self.html = self._response.read()
 
 
 if __name__ == '__main__':
@@ -83,7 +110,7 @@ if __name__ == '__main__':
     page = 1
 
     while True:
-        ob = geturl('http://search.jd.com/search?keyword=c&enc=utf-8&qrst=1&rt=1&stop=1&book=y&vt=2&page='+str(page))
+        ob = geturl('http://search.jd.com/search?keyword=python&enc=utf-8&qrst=1&rt=1&stop=1&book=y&vt=2&page='+str(page))
         if ob==None:
             break
         print '***********print    '+str(page)+'    page************'
@@ -92,4 +119,4 @@ if __name__ == '__main__':
             if not dict.has_key(url):
                 dict[url]=1
                 jp = JdPrice('http:'+url)
-                print jp.get_product_name()+'\t'+jp.get_product_price()
+                print jp.get_product_name()+'\t'+jp.get_product_price()+'\t'+jp.get_product_comments()
