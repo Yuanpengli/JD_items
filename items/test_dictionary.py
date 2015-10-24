@@ -1,5 +1,6 @@
 __author__ = 'liyuanpeng'
 
+
 Alice={}
 
 Alice['phone'] = 2441
@@ -33,5 +34,15 @@ if request == 'a':
 if name in people:
     print "%s's %s is %s." % (name, label[key],people[name][key])
 
+people1=people.copy()
+
+#people.clear()
+for key in people:
+    print key ,people[key]
+
+print people.values()['phone']
+
+print people.get("Alice")
+print people1['Alice']['phone']
 
 #print people
